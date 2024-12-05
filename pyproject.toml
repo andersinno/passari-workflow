@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=64", "wheel", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passari-workflow"
+dynamic = ["version"]
+description = "MuseumPlus digital preservation workflow"
+readme = "README.md"
+authors = [{name="Janne Pulkkinen", email="janne.pulkkinen@museovirasto.fi"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "License :: OSI Approved :: MIT License"
+]
+requires-python = ">=3.6"
+dependencies = [
+    "passari",
+    "click>=7",
+    "toml",
+    "SQLAlchemy",
+    "psycopg2",
+    "rq<2",
+    "python-redis-lock",
+    "alembic",
+    "requests",
+]
+
+[project.optional-dependencies]
+docs = ["sphinxcontrib-apidoc"]
+
+[project.scripts]
+sync-objects = "passari_workflow.scripts.sync_objects:cli"
+sync-attachments = "passari_workflow.scripts.sync_attachments:cli"
+sync-hashes = "passari_workflow.scripts.sync_hashes:cli"
+enqueue-objects = "passari_workflow.scripts.enqueue_objects:cli"
+deferred-enqueue-objects = "passari_workflow.scripts.deferred_enqueue_objects:cli"
+sync-processed-sips = "passari_workflow.scripts.sync_processed_sips:cli"
+reenqueue-object = "passari_workflow.scripts.reenqueue_object:cli"
+freeze-objects = "passari_workflow.scripts.freeze_objects:cli"
+unfreeze-objects = "passari_workflow.scripts.unfreeze_objects:cli"
+pas-shell = "passari_workflow.scripts.pas_shell:cli"
+reset-workflow = "passari_workflow.scripts.reset_workflow:cli"
+dip-tool = "passari_workflow.scripts.dip_tool:cli"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.0"
