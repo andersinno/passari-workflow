@@ -11,13 +11,20 @@ def get_connection_uri():
     """
     Get the connection URI used to connect to the database
     """
-    user = CONFIG["db"]["user"]
+    user = CONFIG["db"].get("user")
     password = CONFIG["db"].get("password", "")
-    host = CONFIG["db"]["host"]
+    host = CONFIG["db"].get("host")
+    port = CONFIG["db"].get("port")
     name = CONFIG["db"]["name"]
-    port = CONFIG["db"]["port"]
 
-    return f"postgresql://{user}:{quote_plus(password)}@{host}:{port}/{name}"
+    if user and host and port:
+        return f"postgresql://{user}:{quote_plus(password)}@{host}:{port}/{name}"
+    elif user or host or port or password:
+        raise EnvironmentError(
+            "If 'host' is given in PostgreSQL config,"
+            " also 'user' and 'port' are required"
+        )
+    return f"postgresql:///{name}"
 
 
 def connect_db():
