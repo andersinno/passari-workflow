@@ -79,7 +79,13 @@ def database(request):
 
         version = get_psql_version()
 
-        with DatabaseJanitor(user, host, port, db_name, version):
+        with DatabaseJanitor(
+            user=user,
+            host=host,
+            port=port,
+            dbname=db_name,
+            version=version
+        ):
             create_engine(
                 f"postgresql://{user}@{host}:{port}/{db_name}"
             )
