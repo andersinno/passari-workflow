@@ -94,6 +94,7 @@ def database(request):
 
 @pytest.fixture(scope="function")
 def engine(database, monkeypatch):
+    monkeypatch.setitem(CONFIG["db"], "url", "")
     monkeypatch.setitem(CONFIG["db"], "user", database.user)
     monkeypatch.setitem(
         CONFIG["db"], "password",
