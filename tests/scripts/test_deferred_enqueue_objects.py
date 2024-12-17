@@ -37,3 +37,29 @@ def test_deferred_enqueue_objects(
     # 5 objects should now be enqueued
     queue = get_queue(QueueType.DOWNLOAD_OBJECT)
     assert len(queue.job_ids) == 5
+
+
+def test_deferred_enqueue_objects_by_ids(
+        redis, session, deferred_enqueue_objects, museum_object_factory):
+    """
+    Enqueue 3 objects by providing their ids
+    """
+    for i in range(0, 20):
+        museum_object_factory(
+            id=i, preserved=False,
+            metadata_hash="", attachment_metadata_hash=""
+        )
+
+    result = deferred_enqueue_objects(["--object-ids", "1,2,3"])
+    assert "3 object(s) with IDs ['1', '2', '3'] will be enqueued" in result.stdout
+
+    queue = get_queue(QueueType.ENQUEUE_OBJECTS)
+    # One job is enqueued
+    assert len(queue.job_ids) == 1
+
+    # Finish the job
+    SimpleWorker([queue], connection=queue.connection).work(burst=True)
+
+    # 3 objects should now be enqueued
+    queue = get_queue(QueueType.DOWNLOAD_OBJECT)
+    assert len(queue.job_ids) == 3

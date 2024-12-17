@@ -30,7 +30,7 @@ def enqueue_object(object_id):
     )
 
 
-def enqueue_objects(object_count, random=False, object_ids=None):
+def enqueue_objects(object_count, object_ids=None, random=False):
     """
     Enqueue given number of objects to the preservation workflow.
 
