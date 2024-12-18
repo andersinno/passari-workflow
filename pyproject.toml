@@ -30,6 +30,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+dev = [
+    "fakeredis[lua]",
+    "freezegun",
+    "pytest",
+    "pytest-asyncio",
+    "sftpserver",
+    "sqlalchemy-utils",
+]
 docs = ["sphinxcontrib-apidoc"]
 
 [project.scripts]
