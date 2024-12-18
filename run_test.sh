@@ -8,6 +8,7 @@
 rq worker download_object &
 rq worker create_sip &
 rq worker submit_sip &
+rq worker confirm_sip &
 
 # Wait a bit for workers to start and stop outputting to console
 sleep 1
