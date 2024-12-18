@@ -75,7 +75,11 @@ async def sync_objects(offset=0, limit=None, save_progress=False):
                 break
 
         objects = {result["id"]: result for result in results}
-        object_ids = list(objects.keys())
+        object_ids = sorted(objects.keys())
+        if object_ids:
+            first_id = object_ids[0]
+            last_id = object_ids[-1]
+            print(f"Processing objects from {first_id} to {last_id}")
 
         inserts, updates = 0, 0
 
