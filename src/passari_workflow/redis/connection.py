@@ -30,6 +30,8 @@ def get_redis_url():
         )
     elif url and (host or port or db or password):
         raise EnvironmentError("The 'url' config for Redis is exclusive")
+    elif url:
+        return url
 
     password_part = f":{quote(password)}@" if password else ""
     port_part = f":{port}" if port else ""
