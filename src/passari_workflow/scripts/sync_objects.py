@@ -221,8 +221,7 @@ async def sync_objects(offset=0, limit=None, save_progress=False):
 def cli(offset, limit, save_progress):
     connect_db()
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(
+    asyncio.run(
         sync_objects(
             offset=offset, limit=limit, save_progress=save_progress
         )
