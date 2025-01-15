@@ -53,6 +53,7 @@ unfreeze-objects = "passari_workflow.scripts.unfreeze_objects:cli"
 pas-shell = "passari_workflow.scripts.pas_shell:cli"
 reset-workflow = "passari_workflow.scripts.reset_workflow:cli"
 dip-tool = "passari_workflow.scripts.dip_tool:cli"
+pas-db-migrate = "passari_workflow.db.migrations.__main__:main"
 
 [tool.setuptools_scm]
 fallback_version = "0.0.0"

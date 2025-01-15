@@ -21,4 +21,4 @@ After updating your *Passari Workflow* installation, you might need to perform a
 
 .. code-block:: console
 
-   $ alembic upgrade head
+   $ pas-db-migrate upgrade head

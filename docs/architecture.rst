@@ -20,9 +20,10 @@ After modifying the database schema, create a new migration using Alembic:
 
 .. code-block:: console
 
-   $ alembic revision --autogenerate -m 'add MuseumObject.foobar'
+   $ pas-db-migrate revision --autogenerate -m 'add MuseumObject.foobar'
 
-This will autogenerate a migration inside the `alembic/versions` directory, which you can update accordingly.
+This will autogenerate a migration inside the `db/migrations/versions`
+directory, which you can update accordingly.
 
 .. warning::
 
