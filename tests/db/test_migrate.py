@@ -10,21 +10,22 @@ from typing import Iterator
 from alembic import command
 from alembic.config import Config
 
+import passari_workflow.db
 from passari_workflow.db.models import Base
 
-ROOT_PATH = Path(__file__).resolve().parent.parent.parent
+DB_PATH = Path(passari_workflow.db.__file__).parent
 
 
 def test_migrate(session, engine, database):
     """
     Test migrations by running all migrations and then downgrading
     """
-    config = Config(fspath(ROOT_PATH / "alembic.ini"))
+    config = Config(fspath(DB_PATH.resolve() / "alembic.ini"))
 
     try:
         Base.metadata.drop_all(engine)
 
-        with run_in_path(ROOT_PATH):
+        with run_in_path(DB_PATH):
             # Upgrade the database
             command.upgrade(config, "head")
 

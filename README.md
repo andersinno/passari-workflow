@@ -105,7 +105,7 @@ Alembic is used for tracking database schema changes and creating automatic data
 For example, after changing the database tables and/or fields, you can run the following command to create a new migration:
 
 ```
-alembic revision --autogenerate -m 'add MuseumObject.new_field'
+pas-db-migrate revision --autogenerate -m 'add MuseumObject.new_field'
 ```
 
 Note that the auto-generated migrations may not work as-is. Make sure to check the created migration and update it as necessary.

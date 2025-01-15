@@ -81,7 +81,7 @@ Once you have filled the configuration file, you can create the Passari database
 
 .. code-block:: console
 
-   $ alembic upgrade head
+   $ pas-db-migrate upgrade head
 
 If you have configured everything correctly, the command should work successfully.
 
