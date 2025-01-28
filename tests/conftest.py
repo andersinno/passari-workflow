@@ -221,9 +221,9 @@ def local_museum_package_factory(museum_package_factory, museum_packages_dir):
 
         # Create the local directory
         package_dir = museum_packages_dir / str(package.museum_object.id)
-        (package_dir / "sip" / "reports").mkdir(parents=True)
+        (package_dir / "data" / "reports").mkdir(parents=True)
         (package_dir / "logs").mkdir()
-        (package_dir / "sip" / "reports" / "Object.xml").write_text(
+        (package_dir / "data" / "reports" / "Object.xml").write_text(
             OBJECT_XML_TEMPLATE.format(object_id=package.museum_object.id)
         )
 

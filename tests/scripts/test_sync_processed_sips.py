@@ -74,7 +74,7 @@ def test_sync_processed_sips_accepted(
         sync_processed_sips):
     # Create local package directory
     museum_packages_dir.joinpath("123456", "logs").mkdir(parents=True)
-    museum_packages_dir.joinpath("123456", "sip", "reports").mkdir(
+    museum_packages_dir.joinpath("123456", "data", "reports").mkdir(
         parents=True
     )
 
@@ -106,7 +106,7 @@ def test_sync_processed_sips_accepted(
     report_path = Path(__file__).parent.resolve() / "data" / "Object.xml"
     shutil.copyfile(
         report_path,
-        museum_packages_dir / "123456" / "sip" / "reports" / "Object.xml"
+        museum_packages_dir / "123456" / "data" / "reports" / "Object.xml"
     )
 
     db_museum_object = MuseumObject(
@@ -167,7 +167,7 @@ def test_sync_processed_sips_rejected(
         sync_processed_sips, museum_package_factory, museum_object):
     # Create local package directory
     museum_packages_dir.joinpath("123456", "logs").mkdir(parents=True)
-    museum_packages_dir.joinpath("123456", "sip", "reports").mkdir(
+    museum_packages_dir.joinpath("123456", "data", "reports").mkdir(
         parents=True
     )
 
@@ -180,7 +180,7 @@ def test_sync_processed_sips_rejected(
     report_path = Path(__file__).parent.resolve() / "data" / "Object.xml"
     shutil.copyfile(
         report_path,
-        museum_packages_dir / "123456" / "sip" / "reports" / "Object.xml"
+        museum_packages_dir / "123456" / "data" / "reports" / "Object.xml"
     )
 
     db_museum_package = museum_package_factory(
@@ -249,7 +249,7 @@ def test_sync_processed_sips_skipped(
     # Create local package directory
     for object_id in range(0, 5):
         (museum_packages_dir / str(object_id) / "logs").mkdir(parents=True)
-        (museum_packages_dir / str(object_id) / "sip" / "reports").mkdir(
+        (museum_packages_dir / str(object_id) / "data" / "reports").mkdir(
             parents=True
         )
 
@@ -263,7 +263,7 @@ def test_sync_processed_sips_skipped(
         report_path = Path(__file__).parent.resolve() / "data" / "Object.xml"
         shutil.copyfile(
             report_path,
-            museum_packages_dir / str(object_id) / "sip" / "reports"
+            museum_packages_dir / str(object_id) / "data" / "reports"
             / "Object.xml"
         )
 

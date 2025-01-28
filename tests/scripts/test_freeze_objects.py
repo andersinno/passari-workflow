@@ -138,8 +138,8 @@ def test_freeze_objects_existing_dirs(
     museum_object_factory(id=123456)
     museum_object_factory(id=654321)
 
-    (museum_packages_dir / "123456" / "sip" / "reports").mkdir(parents=True)
-    (museum_packages_dir / "654321" / "sip" / "reports").mkdir(parents=True)
+    (museum_packages_dir / "123456" / "data" / "reports").mkdir(parents=True)
+    (museum_packages_dir / "654321" / "data" / "reports").mkdir(parents=True)
 
     freeze_objects([
         "--delete-jobs", "--reason", "Test reason", "654321", "123456"

@@ -40,9 +40,9 @@ def test_reset_workflow(
     )
     object_c.latest_package = package_c
 
-    (museum_packages_dir / "10" / "sip").mkdir(parents=True)
-    (museum_packages_dir / "20" / "sip").mkdir(parents=True)
-    (museum_packages_dir / "30" / "sip").mkdir(parents=True)
+    (museum_packages_dir / "10" / "data").mkdir(parents=True)
+    (museum_packages_dir / "20" / "data").mkdir(parents=True)
+    (museum_packages_dir / "30" / "data").mkdir(parents=True)
 
     session.commit()
 

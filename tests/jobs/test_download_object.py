@@ -151,7 +151,7 @@ def test_preservation_error(
         )
 
     # Create the fake museum package directory
-    (museum_packages_dir / "123456" / "sip").mkdir(parents=True)
+    (museum_packages_dir / "123456" / "data").mkdir(parents=True)
 
     monkeypatch.setattr(
         "passari_workflow.jobs.download_object.main",
