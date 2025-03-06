@@ -5,6 +5,7 @@
 # production the workers should be started with a process manager like
 # systemd.
 
+rq worker enqueue_objects &
 rq worker download_object &
 rq worker create_sip &
 rq worker submit_sip &
