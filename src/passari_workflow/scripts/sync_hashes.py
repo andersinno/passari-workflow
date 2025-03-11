@@ -3,10 +3,11 @@ Synchronize the metadata hashes for Objects. Metadata hashes are used
 to determine which objects need to be preserved again.
 """
 import hashlib
+import logging
 from collections import defaultdict
 
 import click
-from sqlalchemy.orm import Load, load_only, subqueryload
+from sqlalchemy.orm import load_only
 from sqlalchemy.sql.expression import bindparam
 
 from passari_workflow.db import scoped_session
@@ -14,6 +15,10 @@ from passari_workflow.db.connection import connect_db
 from passari_workflow.db.models import (MuseumAttachment, MuseumObject,
                                                object_attachment_association_table)
 from passari_workflow.heartbeat import HeartbeatSource, submit_heartbeat
+
+from ._base_command import BaseCommand
+
+LOG = logging.getLogger(__name__)
 
 # Process 2000 objects at a time
 CHUNK_SIZE = 2000
@@ -185,9 +190,11 @@ def sync_hashes():
                 )
                 db.execute(update_stmt, update_params)
 
-            print(
-                f"{total} iterated, {updated} updated and {skipped} skipped "
-                "so far"
+            LOG.info(
+                "%s iterated, %s updated and %s skipped so far",
+                total,
+                updated,
+                skipped,
             )
 
             if all_iterated:
@@ -196,7 +203,7 @@ def sync_hashes():
     submit_heartbeat(HeartbeatSource.SYNC_HASHES)
 
 
-@click.command()
+@click.command(cls=BaseCommand)
 def cli():
     connect_db()
     sync_hashes()
