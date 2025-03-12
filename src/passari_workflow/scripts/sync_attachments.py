@@ -7,9 +7,8 @@ with placeholder entries created for any entries that haven't been synced
 yet.
 """
 import asyncio
-import datetime
+import logging
 from collections import defaultdict
-from pathlib import Path
 
 import click
 from sqlalchemy.orm import load_only
@@ -17,7 +16,6 @@ from sqlalchemy.sql.expression import bindparam
 
 from passari.museumplus.connection import get_museum_session
 from passari.museumplus.search import iterate_multimedia
-from passari_workflow.config import USER_CONFIG_DIR
 from passari_workflow.db import scoped_session
 from passari_workflow.db.connection import connect_db
 from passari_workflow.db.models import MuseumAttachment, MuseumObject
@@ -26,6 +24,10 @@ from passari_workflow.heartbeat import HeartbeatSource, submit_heartbeat
 from passari_workflow.scripts.utils import (finish_sync_progress,
                                                    get_sync_status,
                                                    update_offset)
+
+from ._base_command import BaseCommand
+
+LOG = logging.getLogger(__name__)
 
 # How many attachments to retrieve at a time before updating the database
 CHUNK_SIZE = 500
@@ -55,7 +57,7 @@ async def sync_attachments(offset=0, limit=None, save_progress=False):
         # Start synchronization from attachments that changed since the last
         # sync
         modify_date_gte = sync_status.prev_start_sync_date
-        print(f"Continuing synchronization from {offset}")
+        LOG.info("Continuing synchronization from %s", offset)
 
     # TODO: This is pretty much an inverse version of 'sync_objects'.
     # This process should be made more generic if possible.
@@ -186,9 +188,11 @@ async def sync_attachments(offset=0, limit=None, save_progress=False):
 
         results = []
 
-        print(
-            f"Updated, {inserts} inserts, {updates} "
-            f"updates. Updating from offset: {index}"
+        LOG.info(
+            "Updated, %s inserts, %s updates. Updating from offset: %s",
+            inserts,
+            updates,
+            index,
         )
 
         # Submit heartbeat after each successful iteration instead of once
@@ -208,7 +212,7 @@ async def sync_attachments(offset=0, limit=None, save_progress=False):
     await museum_session.close()
 
 
-@click.command()
+@click.command(cls=BaseCommand)
 @click.option("--offset", default=0)
 @click.option("--limit", type=int, default=None)
 @click.option(

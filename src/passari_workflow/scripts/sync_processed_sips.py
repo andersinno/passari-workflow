@@ -3,6 +3,7 @@ Discover accepted AIPs and rejected SIPs by crawling the SFTP `accepted`
 and `rejected` directories
 """
 import datetime
+import logging
 import os
 import os.path
 from collections import OrderedDict, namedtuple
@@ -20,6 +21,10 @@ from passari_workflow.db.models import MuseumObject, MuseumPackage
 from passari_workflow.heartbeat import HeartbeatSource, submit_heartbeat
 from passari_workflow.jobs.confirm_sip import confirm_sip
 from passari_workflow.queue.queues import QueueType, get_queue
+
+from ._base_command import BaseCommand
+
+LOG = logging.getLogger(__name__)
 
 SIPResult = namedtuple(
     "SIPResult",
@@ -236,7 +241,7 @@ def get_processed_sips(
                 )
                 found_sips += 1
 
-        print(f"Found {found_sips} on {date_dir}")
+        LOG.info("Found %s on %s", found_sips, date_dir)
 
     return results
 
@@ -283,13 +288,13 @@ def sync_processed_sips(days):
             sftp, status="accepted", days=days,
             confirmed_sip_filenames=confirmed_sip_filenames
         )
-        print(f"Found {len(accepted_sips)} accepted SIPs")
+        LOG.info("Found %s accepted SIPs", len(accepted_sips))
 
         rejected_sips = get_processed_sips(
             sftp, status="rejected", days=days,
             confirmed_sip_filenames=confirmed_sip_filenames
         )
-        print(f"Found {len(rejected_sips)} rejected SIPs")
+        LOG.info("Found %s rejected SIPs", len(rejected_sips))
 
         completed_sips = combine_results(accepted_sips, rejected_sips)
 
@@ -298,7 +303,7 @@ def sync_processed_sips(days):
         submit_heartbeat(HeartbeatSource.SYNC_PROCESSED_SIPS)
 
 
-@click.command()
+@click.command(cls=BaseCommand)
 @click.option(
     # According to DPRES API docs, reports for rejected packages will preserved
     # for at least 10 days
