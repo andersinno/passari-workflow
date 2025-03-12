@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 
 from click.testing import CliRunner
@@ -6,6 +8,11 @@ from click.testing import CliRunner
 @pytest.fixture(scope="function")
 def cli(session):
     def func(cmd, args, success=True):
+        # Re-enable all loggers under passari_workflow
+        for logger in logging.Logger.manager.loggerDict.values():
+            if getattr(logger, "name", "").startswith("passari_workflow."):
+                logger.disabled = False
+
         runner = CliRunner()
         result = runner.invoke(cmd, args, catch_exceptions=False)
 
